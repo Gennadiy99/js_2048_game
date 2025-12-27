@@ -56,10 +56,9 @@ function createChip() {
   return chip;
 }
 // переменная для доски на html
-
 const board = document.querySelector('.game-field');
 
-// TODO функцию создания и вывода HTML Фишки.
+// TODO Cоздать HTML Фишку.
 
 function createElem(Chip) {
   if (!Chip) {
@@ -81,9 +80,6 @@ function createElem(Chip) {
 
   board.append(div);
 }
-
-// функция хода фишек
-// function moveTiles(direction) {}
 
 // Функция сортировки Фишек по направлению хода.
 function sortChip(direct) {
@@ -111,6 +107,61 @@ function sortChip(direct) {
   }
 }
 
+// Функция Направл + данные Хода
+function getDirectionVector(direction){
+  switch(direction){
+    case 'ArrowUp':
+      return {row: -1, col: 0};
+    case 'ArrowDown':
+      return{row: 1, col: 0};
+    case 'ArrowLeft':
+      return {row: 0, col: -1};
+    case 'ArrowRight':
+      return {row: 0, col: 1};
+    default: return null;
+  }
+}
+// Функция получить Клетку для хода
+function getCell(row, col){
+  return cellArr.find((cell) => cell.row === row && cell.col === col || null);
+}
+// функция ходов фишек
+function moveChips(direction){
+  sortChip(direction);
+
+  for(chip of arrChip ){
+    moveOneChip(chip, direction);
+  }
+}
+
+// функция хода фишкИ
+function moveOneChip(chip, direction){
+  const vector = getDirectionVector(direction);
+
+  if(!vector) return;
+
+  let currentCell = chip.cell;
+
+  while(true){
+    const nextRow = currentCell.row + vector.row;
+    const nextCol = currentCell.col + vector.col;
+
+    const nextCell =  getCell(nextRow, nextCol);
+
+    if(!nextCell) break;
+    if(!nextCell.isEmpty) break;
+
+    currentCell.tile = null;
+
+    chip.cell = nextCell;
+    nextCell.tile = chip;
+
+    currentCell = nextCell;
+  }
+
+}
+
+
 // Нажатие клавиши вывод элем HTML на поле
 document.addEventListener('keydown', (ev) => {
   const direction = ev.key; // Направление стрелки,Сортировки
@@ -123,9 +174,9 @@ document.addEventListener('keydown', (ev) => {
 
   const chip = createChip(); // OBJ фишка
 
-  createElem(chip); // HTML фишка
   sortChip(direction); // Сортировка фишек OBJ
-
+  createElem(chip); // HTML фишка
+  moveChips(direction);
   // console.log(arrChip);
 });
 
