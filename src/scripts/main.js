@@ -39,7 +39,9 @@ class Tile {
 // массив Obj Фишек
 const arrChip = [];
 
+
 // создать фишку Obj - chip
+
 function createChip() {
   const cell = getCellEmpty();
 
@@ -54,6 +56,8 @@ function createChip() {
   return chip;
 }
 
+
+
 // переменная для доски на html
 const board = document.querySelector('.game-field');
 
@@ -65,7 +69,7 @@ function createElem(Chip) {
 
   const div = document.createElement('div');
 
-  div.classList.add('field-cell', 'field-cell--2');
+  div.classList.add('field-cell', 'field-cell--2', 'chipHtml');
   div.style.position = 'absolute';
   div.innerText = Chip.value;
 
@@ -77,6 +81,14 @@ function createElem(Chip) {
   div.style.top = cellRect.top - boardRect.top + 'px';
 
   board.append(div);
+}
+
+function renderHtmlChip(arrChip) {
+  document.querySelectorAll('.chipHtml').forEach(ch=> ch.remove());
+
+  for(const chip of arrChip){
+    createElem(chip);
+  }
 }
 
 // Функция сортировки Фишек по направлению хода.
@@ -156,7 +168,7 @@ function moveOneChip(chip, direction){
 function moveChips(direction){
   sortChip(direction);
 
-  for(chip of arrChip ){
+  for(const chip of arrChip ){
     moveOneChip(chip, direction);
   }
 }
@@ -173,10 +185,9 @@ document.addEventListener('keydown', (ev) => {
 
   moveChips(direction);
   const chip = createChip(); // OBJ фишка
-  createElem(chip); // HTML фишка
-
-  // sortChip(direction); // Сортировка фишек OBJ
-  // console.log(arrChip);
+  // createElem(chip); // HTML фишка
+  renderHtmlChip(arrChip); // Удаление и созание всех HTML фишек
+  console.log(`OBJ`, arrChip.length);
 });
 
 //  ! Важно: Этот блок веременный
