@@ -4,8 +4,6 @@
 // const Game = require('../modules/Game.class');
 // const game = new Game();
 
-// Write your code here
-
 //  массив всех клеток поля
 const cellArr = [];
 
@@ -55,11 +53,11 @@ function createChip() {
 
   return chip;
 }
+
 // переменная для доски на html
 const board = document.querySelector('.game-field');
 
-// TODO Cоздать HTML Фишку.
-
+// Cоздать HTML Фишку.
 function createElem(Chip) {
   if (!Chip) {
     return;
@@ -121,17 +119,10 @@ function getDirectionVector(direction){
     default: return null;
   }
 }
+
 // Функция получить Клетку для хода
 function getCell(row, col){
   return cellArr.find((cell) => cell.row === row && cell.col === col || null);
-}
-// функция ходов фишек
-function moveChips(direction){
-  sortChip(direction);
-
-  for(chip of arrChip ){
-    moveOneChip(chip, direction);
-  }
 }
 
 // функция хода фишкИ
@@ -161,6 +152,14 @@ function moveOneChip(chip, direction){
 
 }
 
+// функция ходов фишек
+function moveChips(direction){
+  sortChip(direction);
+
+  for(chip of arrChip ){
+    moveOneChip(chip, direction);
+  }
+}
 
 // Нажатие клавиши вывод элем HTML на поле
 document.addEventListener('keydown', (ev) => {
@@ -172,11 +171,11 @@ document.addEventListener('keydown', (ev) => {
     return;
   }
 
-  const chip = createChip(); // OBJ фишка
-
-  sortChip(direction); // Сортировка фишек OBJ
-  createElem(chip); // HTML фишка
   moveChips(direction);
+  const chip = createChip(); // OBJ фишка
+  createElem(chip); // HTML фишка
+
+  // sortChip(direction); // Сортировка фишек OBJ
   // console.log(arrChip);
 });
 
