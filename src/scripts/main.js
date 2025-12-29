@@ -32,6 +32,7 @@ class Tile {
   constructor(cell) {
     this.value = 2;
     this.cell = cell;
+    this.marg = false;
     cell.tile = this;
   }
 }
@@ -55,8 +56,6 @@ function createChip() {
 
   return chip;
 }
-
-
 
 // переменная для доски на html
 const board = document.querySelector('.game-field');
@@ -138,7 +137,8 @@ function getCell(row, col){
 }
 
 // функция хода фишкИ
-function moveOneChip(chip, direction){
+
+function moveOneChip1(chip, direction){
   const vector = getDirectionVector(direction);
 
   if(!vector) return;
@@ -161,6 +161,94 @@ function moveOneChip(chip, direction){
 
     currentCell = nextCell;
   }
+}
+
+
+function margeChips(chip, direction){
+  const vector = getDirectionVector(direction);
+
+  if(!vector) return;
+
+  let currentCell = chip.cell;
+  const nextRow = currentCell.row + vector.row;
+  const nextCol = currentCell.col + vector.col;
+  const nextCell =  getCell(nextRow, nextCol);
+
+  if(!nextCell) return;
+
+  if(!nextCell.isEmpty){
+
+    if(nextCell.tile.value === chip.value && !nextCell.tile.marg
+      && !chip.marg){
+        const tileToRemove = nextCell.tile;
+
+        chip.value *=2;
+        currentCell.tile = null;
+        chip.cell = nextCell;
+        nextCell.tile = chip;
+        chip.marg = true;
+
+        const index = arrChip.indexOf(tileToRemove);
+        if (index !== -1) {
+          arrChip.splice(index, 1);
+        }
+      }
+    return;
+  }
+}
+// Функция Движения новая
+function move(direction){
+   sortChip(direction);
+
+   for(const chip of arrChip ){
+    moveOneChip1(chip, direction);
+  }
+   for(const chip of arrChip ){
+    margeChips(chip, direction);
+  }
+   for(const chip of arrChip ){
+    moveOneChip1(chip, direction);
+  }
+}
+
+function moveOneChip(chip, direction){
+  const vector = getDirectionVector(direction);
+
+  if(!vector) return;
+
+  let currentCell = chip.cell;
+
+  while(true){
+    const nextRow = currentCell.row + vector.row;
+    const nextCol = currentCell.col + vector.col;
+    const nextCell =  getCell(nextRow, nextCol);
+
+    if(!nextCell) break;
+    if(!nextCell.isEmpty){
+
+      if(nextCell.tile.value === chip.value && !nextCell.tile.marg
+        && !chip.marg){
+          const tileToRemove = nextCell.tile;
+
+          chip.value *=2;
+          currentCell.tile = null;
+          chip.cell = nextCell;
+          nextCell.tile = chip;
+          chip.marg = true;
+
+          const index = arrChip.indexOf(tileToRemove);
+          if (index !== -1) {
+            arrChip.splice(index, 1);
+          }
+        }
+      break;
+    }
+
+    chip.cell = nextCell;
+    nextCell.tile = chip;
+    currentCell.tile = null;
+    currentCell = nextCell;
+  }
 
 }
 
@@ -172,6 +260,10 @@ function moveChips(direction){
     moveOneChip(chip, direction);
   }
 }
+// Функция сброса Флага (слияния) marg
+function resetMergeFlags(){
+  arrChip.forEach(ch => ch.marg = false);
+};
 
 // Нажатие клавиши вывод элем HTML на поле
 document.addEventListener('keydown', (ev) => {
@@ -183,11 +275,11 @@ document.addEventListener('keydown', (ev) => {
     return;
   }
 
-  moveChips(direction);
-  const chip = createChip(); // OBJ фишка
-  // createElem(chip); // HTML фишка
+  // moveChips(direction);// Движение фишек
+  move(direction);
+  resetMergeFlags();// Сброс Флага marg
+  createChip(); // OBJ фишка
   renderHtmlChip(arrChip); // Удаление и созание всех HTML фишек
-  console.log(`OBJ`, arrChip.length);
 });
 
 //  ! Важно: Этот блок веременный
