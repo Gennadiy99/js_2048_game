@@ -211,7 +211,7 @@ function move(direction){
   }
 }
 
-function moveOneChip(chip, direction){
+/* function moveOneChip(chip, direction){
   const vector = getDirectionVector(direction);
 
   if(!vector) return;
@@ -250,16 +250,16 @@ function moveOneChip(chip, direction){
     currentCell = nextCell;
   }
 
-}
+} */
 
 // функция ходов фишек
-function moveChips(direction){
+/* function moveChips(direction){
   sortChip(direction);
 
   for(const chip of arrChip ){
     moveOneChip(chip, direction);
   }
-}
+} */
 // Функция сброса Флага (слияния) marg
 function resetMergeFlags(){
   arrChip.forEach(ch => ch.marg = false);
