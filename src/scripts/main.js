@@ -4,11 +4,15 @@
 // const Game = require('../modules/Game.class');
 // const game = new Game();
 
-//  массив всех клеток поля
 import { isArrowButton } from './utils.js';
+// import { vectors } from './utils.js';
+import { getDirectionVector1 } from './utils.js';
+import { sortChip } from './utils.js';
+
+// array all cells field
 const cellArr = [];
 
-// создание всех Obj клеток Поля
+// creation of all field cells (Obj)
 for (let row = 0; row < 4; row++) {
   for (let col = 0; col < 4; col++) {
     const cell = {
@@ -24,11 +28,11 @@ for (let row = 0; row < 4; row++) {
   }
 }
 
-// найти пустую клетку поля.
+// find empty cell field
 function getCellEmpty() {
   return cellArr.find((elem) => elem.isEmpty) || null;
 }
-// создание Obj Фишки
+// template Obj Chip
 class Tile {
   constructor(cell) {
     this.value = 2;
@@ -38,12 +42,10 @@ class Tile {
   }
 }
 
-// массив Obj Фишек
+// Array Obj Chip
 const arrChip = [];
 
-
-// создать фишку Obj - chip
-
+// Creare Obj - chip
 function createChip() {
   const cell = getCellEmpty();
 
@@ -58,10 +60,10 @@ function createChip() {
   return chip;
 }
 
-// переменная для доски на html
+// variable for board (html)
 const board = document.querySelector('.game-field');
 
-// Cоздать HTML Фишку.
+// create HTML Chip.
 function createElem(Chip) {
   if (!Chip) {
     return;
@@ -91,56 +93,15 @@ function renderHtmlChip(arrChip) {
   }
 }
 
-// Фун. сортировки Фишек по направлению хода.
-function sortChip(direct) {
-  switch (direct) {
-    case 'ArrowUp':
-      arrChip.sort(
-        (a, b) => a.cell.col - b.cell.col || a.cell.row - b.cell.row,
-      );
-      break;
-    case 'ArrowDown':
-      arrChip.sort(
-        (a, b) => a.cell.col - b.cell.col || b.cell.row - a.cell.row,
-      );
-      break;
-    case 'ArrowLeft':
-      arrChip.sort(
-        (a, b) => a.cell.row - b.cell.row || a.cell.col - b.cell.col,
-      );
-      break;
-    case 'ArrowRight':
-      arrChip.sort(
-        (a, b) => a.cell.row - b.cell.row || b.cell.col - a.cell.col,
-      );
-      break;
-  }
-}
-
-// Фун. Направл + данные Хода
-function getDirectionVector(direction){
-  switch(direction){
-    case 'ArrowUp':
-      return {row: -1, col: 0};
-    case 'ArrowDown':
-      return{row: 1, col: 0};
-    case 'ArrowLeft':
-      return {row: 0, col: -1};
-    case 'ArrowRight':
-      return {row: 0, col: 1};
-    default: return null;
-  }
-}
-
-// Фун. получить Клетку для хода
+// get cell to move
 function getCell(row, col){
   return cellArr.find((cell) => cell.row === row && cell.col === col || null);
 }
 
-// Фун. хода фишкИ
+// move of Chip
 
 function moveOneChip(chip, direction){
-  const vector = getDirectionVector(direction);
+  const vector = getDirectionVector1(direction);
 
   if(!vector) return;
 
@@ -164,9 +125,9 @@ function moveOneChip(chip, direction){
   }
 }
 
-// Функц. Обьединение фишек
+// merging of chips
 function margeChips(chip, direction){
-  const vector = getDirectionVector(direction);
+  const vector = getDirectionVector1(direction);
 
   if(!vector) return;
 
@@ -197,9 +158,9 @@ function margeChips(chip, direction){
     return;
   }
 }
-// Фун. Движение-Обьединение-Движение
-function move(direction){
-   sortChip(direction);
+// move + merging + move
+function moveChips(direction, arrChip){
+   sortChip(direction, arrChip);
 
    for(const chip of arrChip ){
     moveOneChip(chip, direction);
@@ -212,27 +173,21 @@ function move(direction){
   }
 }
 
-// Фун. сброса Флага (слияния) marg
+// Reset flags merge
 function resetMergeFlags(){
   arrChip.forEach(ch => ch.marg = false);
 };
 
-// Нажатие клавиши вывод элем HTML на поле
+// launch functions by pressing keys
 document.addEventListener('keydown', (ev) => {
-  const direction = ev.key; // Направление стрелки,Сортировки
-
-  // if (
-  //   !['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(direction)
-  // ) {
-  //   return;
-  // }
+  const direction = ev.key; // direction arrow.
 
   if(!isArrowButton(direction)){return};
 
-  move(direction);
-  resetMergeFlags();// Сброс Флага marg
-  createChip(); // OBJ фишка
-  renderHtmlChip(arrChip); // Удаление и созание всех HTML фишек
+  moveChips(direction, arrChip);
+  resetMergeFlags();// Reset flags merge
+  createChip(); // OBJ Chip
+  renderHtmlChip(arrChip); // Deleting and creating all chips
 });
 
 //  ! Важно: Этот блок веременный
