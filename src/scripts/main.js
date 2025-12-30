@@ -5,6 +5,7 @@
 // const game = new Game();
 
 //  массив всех клеток поля
+import { isArrowButton } from './utils.js';
 const cellArr = [];
 
 // создание всех Obj клеток Поля
@@ -90,7 +91,7 @@ function renderHtmlChip(arrChip) {
   }
 }
 
-// Функция сортировки Фишек по направлению хода.
+// Фун. сортировки Фишек по направлению хода.
 function sortChip(direct) {
   switch (direct) {
     case 'ArrowUp':
@@ -116,7 +117,7 @@ function sortChip(direct) {
   }
 }
 
-// Функция Направл + данные Хода
+// Фун. Направл + данные Хода
 function getDirectionVector(direction){
   switch(direction){
     case 'ArrowUp':
@@ -131,14 +132,14 @@ function getDirectionVector(direction){
   }
 }
 
-// Функция получить Клетку для хода
+// Фун. получить Клетку для хода
 function getCell(row, col){
   return cellArr.find((cell) => cell.row === row && cell.col === col || null);
 }
 
-// функция хода фишкИ
+// Фун. хода фишкИ
 
-function moveOneChip1(chip, direction){
+function moveOneChip(chip, direction){
   const vector = getDirectionVector(direction);
 
   if(!vector) return;
@@ -163,7 +164,7 @@ function moveOneChip1(chip, direction){
   }
 }
 
-
+// Функц. Обьединение фишек
 function margeChips(chip, direction){
   const vector = getDirectionVector(direction);
 
@@ -196,71 +197,22 @@ function margeChips(chip, direction){
     return;
   }
 }
-// Функция Движения новая
+// Фун. Движение-Обьединение-Движение
 function move(direction){
    sortChip(direction);
 
    for(const chip of arrChip ){
-    moveOneChip1(chip, direction);
+    moveOneChip(chip, direction);
   }
    for(const chip of arrChip ){
     margeChips(chip, direction);
   }
    for(const chip of arrChip ){
-    moveOneChip1(chip, direction);
+    moveOneChip(chip, direction);
   }
 }
 
-/* function moveOneChip(chip, direction){
-  const vector = getDirectionVector(direction);
-
-  if(!vector) return;
-
-  let currentCell = chip.cell;
-
-  while(true){
-    const nextRow = currentCell.row + vector.row;
-    const nextCol = currentCell.col + vector.col;
-    const nextCell =  getCell(nextRow, nextCol);
-
-    if(!nextCell) break;
-    if(!nextCell.isEmpty){
-
-      if(nextCell.tile.value === chip.value && !nextCell.tile.marg
-        && !chip.marg){
-          const tileToRemove = nextCell.tile;
-
-          chip.value *=2;
-          currentCell.tile = null;
-          chip.cell = nextCell;
-          nextCell.tile = chip;
-          chip.marg = true;
-
-          const index = arrChip.indexOf(tileToRemove);
-          if (index !== -1) {
-            arrChip.splice(index, 1);
-          }
-        }
-      break;
-    }
-
-    chip.cell = nextCell;
-    nextCell.tile = chip;
-    currentCell.tile = null;
-    currentCell = nextCell;
-  }
-
-} */
-
-// функция ходов фишек
-/* function moveChips(direction){
-  sortChip(direction);
-
-  for(const chip of arrChip ){
-    moveOneChip(chip, direction);
-  }
-} */
-// Функция сброса Флага (слияния) marg
+// Фун. сброса Флага (слияния) marg
 function resetMergeFlags(){
   arrChip.forEach(ch => ch.marg = false);
 };
@@ -269,13 +221,14 @@ function resetMergeFlags(){
 document.addEventListener('keydown', (ev) => {
   const direction = ev.key; // Направление стрелки,Сортировки
 
-  if (
-    !['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(direction)
-  ) {
-    return;
-  }
+  // if (
+  //   !['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(direction)
+  // ) {
+  //   return;
+  // }
 
-  // moveChips(direction);// Движение фишек
+  if(!isArrowButton(direction)){return};
+
   move(direction);
   resetMergeFlags();// Сброс Флага marg
   createChip(); // OBJ фишка
@@ -287,4 +240,3 @@ document.addEventListener('keydown', (ev) => {
 // Обычная заметка (дополнительная)
 // TODO ВАЖНЫЙ коментарий- Добавить Логирование.
 
-// const targCell = table1.tBodies[0].rows[chipRow].cells[chipCol];
