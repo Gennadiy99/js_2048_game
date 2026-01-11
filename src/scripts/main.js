@@ -56,7 +56,7 @@ function createChip() {
 
   arrChip.push(chip);
 
-  return chip;
+  // return chip;
 }
 
 // variable for board (html)
