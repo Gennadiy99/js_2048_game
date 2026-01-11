@@ -5,7 +5,6 @@
 // const game = new Game();
 
 import { isArrowButton } from './utils.js';
-// import { vectors } from './utils.js';
 import { getDirectionVector1 } from './utils.js';
 import { sortChip } from './utils.js';
 
