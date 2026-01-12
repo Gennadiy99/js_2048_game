@@ -55,8 +55,6 @@ function createChip() {
   const chip = new Tile(cell);
 
   arrChip.push(chip);
-
-  // return chip;
 }
 
 // variable for board (html)

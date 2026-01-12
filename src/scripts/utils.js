@@ -30,3 +30,30 @@ export function sortChip(direction, arrChip) {
   if(!condition) return null;
     arrChip.sort(condition);
 }
+// Новые привязки к mein refactor.js
+// template Obj Chip
+export class Tile {
+  constructor(cell) {
+    this.value = 2;
+    this.cell = cell;
+    this.marg = false;
+    cell.tile = this;
+  }
+}
+
+// creation cell for field  (Obj)
+export class Cell {
+  constructor(row,col){
+    this.row = row;
+    this.col = col;
+    this.tile = null;
+  }
+
+  isEmpty() {
+    return this.tile === null;
+  };
+};
+
+//! Решить по getRandomEmptyCell в utils
+//! Решить цикл для создания Cell куда?
+//! Как создать в классе Game классы Cell Nile
