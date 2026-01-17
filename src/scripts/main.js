@@ -8,10 +8,10 @@ import { isArrowButton } from './utils.js';
 import { getDirectionVector1 } from './utils.js';
 import { sortChip } from './utils.js';
 
-// array all cells field
+// array all cells field - *
 const cellArr = [];
 
-// creation of all field cells (Obj)
+// creation of all field cells (Obj)- *
 for (let row = 0; row < 4; row++) {
   for (let col = 0; col < 4; col++) {
     const cell = {
@@ -31,7 +31,8 @@ for (let row = 0; row < 4; row++) {
 function getCellEmpty() {
   return cellArr.find((elem) => elem.isEmpty) || null;
 }
-// template Obj Chip
+
+// template Obj Chip - *
 class Tile {
   constructor(cell) {
     this.value = 2;
@@ -41,10 +42,10 @@ class Tile {
   }
 }
 
-// Array Obj Chip
+// Array Obj Chip - *
 const arrChip = [];
 
-// Creare Obj - chip
+// Creare Obj - chip - *
 function createChip() {
   const cell = getCellEmpty();
 
