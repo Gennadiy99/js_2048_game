@@ -23,11 +23,6 @@ export class Game {
     if (emptyCells.length === 0) return null;
 
     return ramdom(emptyCells);
-
-    // function ramdom(emptyCells) {
-    //   const index = Math.floor(Math.random() * emptyCells.length);
-    //   return emptyCells[index];
-    // }
   }
 
   // Creare Obj - chip
@@ -42,9 +37,24 @@ export class Game {
 
     this.arrChip.push(chip);
   }
+
+  getState(){}
+
+  getScore(){}
+
+  getStatus(){}
+
+  moveLeft(){}
+
+  moveRight(){}
+
+  moveUp(){}
+
+  moveDown(){}
+
+  start(){}
+
+  restart(){}
+
 }
 
-// const game = new Game();
-// game.createCellsField();
-// game.createChip();
-// console.log(game.cellArr, game.arrChip);
