@@ -4,12 +4,12 @@ import { ramdom } from './utils.js';
 
 export class Game {
   constructor() {
-    this.cellArr = createCellsField(); // array all cells field
+    this.cellArr = this.#createCellsField(); // array all cells field
     this.arrChip = []; // Array Obj Chip
   }
 
   // get random empty cell
-  getRandomEmptyCell() {
+  #getRandomEmptyCell() {
     const emptyCells = [];
 
     for (const cell of this.cellArr) {
@@ -38,23 +38,21 @@ export class Game {
     this.arrChip.push(chip);
   }
 
-  getState(){}
+  getState() {}
 
-  getScore(){}
+  getScore() {}
 
-  getStatus(){}
+  getStatus() {}
 
-  moveLeft(){}
+  moveLeft() {}
 
-  moveRight(){}
+  moveRight() {}
 
-  moveUp(){}
+  moveUp() {}
 
-  moveDown(){}
+  moveDown() {}
 
-  start(){}
+  start() {}
 
-  restart(){}
-
+  restart() {}
 }
-
