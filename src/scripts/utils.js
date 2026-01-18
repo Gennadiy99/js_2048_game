@@ -31,7 +31,7 @@ export function sortChip(direction, arrChip) {
   if (!condition) return null;
   arrChip.sort(condition);
 }
-// Новые привязки к mein-refactor.js
+//! Новые привязки к mein-refactor.js
 // template Obj Chip
 export class Tile {
   constructor(cell) {
@@ -75,10 +75,83 @@ export function createCellsField() {
 }
 
 // random empty cell
-export function ramdom(emptyCells) {
-      const index = Math.floor(Math.random() * emptyCells.length);
-      return emptyCells[index];
-    }
+export function random(emptyCells) {
+  const index = Math.floor(Math.random() * emptyCells.length);
+  return emptyCells[index];
+}
 
+// get cell to move
+// export function getCell(row, col) {
+//   return cellArr.find(
+//     (cell) => (cell.row === row && cell.col === col) || null,
+//   );
+// }
+
+//? move + merging + move перенес в класс Game как метод
+// export function moveChips(direction, arrChip){
+//    sortChip(direction, arrChip);
+
+//    for(const chip of arrChip ){
+//     moveOneChip(chip, direction);
+//   }
+//    for(const chip of arrChip ){
+//     margeChips(chip, direction);
+//   }
+//    for(const chip of arrChip ){
+//     moveOneChip(chip, direction);
+//   }
+// }
+
+//? move of Chip - move to game2048
+
+// export function moveOneChip(chip, direction) {
+//   const vector = getDirectionVector1(direction);
+
+//   if (!vector) return;
+
+//   let currentCell = chip.cell;
+
+//   while (true) {
+//     const nextRow = currentCell.row + vector.row;
+//     const nextCol = currentCell.col + vector.col;
+
+//     const nextCell = getCell(nextRow, nextCol);
+
+//     if (!nextCell) break;
+//     if (!nextCell.isEmpty) break;
+
+//     currentCell.tile = null;
+
+//     chip.cell = nextCell;
+//     nextCell.tile = chip;
+
+//     currentCell = nextCell;
+//   }
+// }
+
+// variable for board (html)
+export const board = document.querySelector('.game-field');
+
+// create HTML Chip.
+export function createHtmlChip(Chip) {
+  if (!Chip) {
+    return;
+  }
+
+  const div = document.createElement('div');
+
+  div.classList.add('field-cell', 'field-cell--2', 'chipHtml');
+  div.style.position = 'absolute';
+  div.innerText = Chip.value;
+
+  const boardRect = board.getBoundingClientRect();
+  const targCell = board.rows[Chip.cell.row].cells[Chip.cell.col];
+  const cellRect = targCell.getBoundingClientRect();
+
+  div.style.left = cellRect.left - boardRect.left + 'px';
+  div.style.top = cellRect.top - boardRect.top + 'px';
+
+  board.append(div);
+}
 
 //! Как создать в классе Game методы

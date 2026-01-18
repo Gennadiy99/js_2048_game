@@ -9,10 +9,10 @@ import { getDirectionVector1 } from './utils.js';
 import { sortChip } from './utils.js';
 
 // array all cells field - *
-const cellArr = [];
+//? const cellArr = []; - moved to game2048
 
-// creation of all field cells (Obj)- *
-for (let row = 0; row < 4; row++) {
+//? creation of all field cells (Obj)- * - moved to utils
+/* for (let row = 0; row < 4; row++) {
   for (let col = 0; col < 4; col++) {
     const cell = {
       row: row,
@@ -25,28 +25,28 @@ for (let row = 0; row < 4; row++) {
 
     cellArr.push(cell);
   }
-}
+} */
 
-// find empty cell field
-function getCellEmpty() {
-  return cellArr.find((elem) => elem.isEmpty) || null;
-}
+//! find empty cell field - replaced with getRandomEmptyCell
+// function getCellEmpty() {
+//   return cellArr.find((elem) => elem.isEmpty) || null;
+// }
 
-// template Obj Chip - *
-class Tile {
+//? template Obj Chip - * - moved to utils
+/* class Tile {
   constructor(cell) {
     this.value = 2;
     this.cell = cell;
     this.marg = false;
     cell.tile = this;
   }
-}
+} */
 
-// Array Obj Chip - *
-const arrChip = [];
+// Array Obj Chip -
+//? const arrChip = [];- moved to utils
 
-// Creare Obj - chip - *
-function createChip() {
+//? Creare Obj - chip - * - moved to game2048
+/* function createChip() {
   const cell = getCellEmpty();
 
   if (!cell) {
@@ -57,12 +57,12 @@ function createChip() {
 
   arrChip.push(chip);
 }
+ */
+//? variable for board (html) - moved to utils
+// const board = document.querySelector('.game-field');
 
-// variable for board (html)
-const board = document.querySelector('.game-field');
-
-// create HTML Chip.
-function createElem(Chip) {
+//? create HTML Chip. - moved to utils
+/* function createHtmlChip(Chip) {
   if (!Chip) {
     return;
   }
@@ -87,14 +87,14 @@ function renderHtmlChip(arrChip) {
   document.querySelectorAll('.chipHtml').forEach(ch=> ch.remove());
 
   for(const chip of arrChip){
-    createElem(chip);
+    createHtmlChip(chip);
   }
-}
+} */
 
-// get cell to move
-function getCell(row, col){
-  return cellArr.find((cell) => cell.row === row && cell.col === col || null);
-}
+//? get cell to move - moved to utils
+// function getCell(row, col){
+//   return cellArr.find((cell) => cell.row === row && cell.col === col || null);
+// }
 
 // move of Chip
 
@@ -157,7 +157,7 @@ function margeChips(chip, direction){
   }
 }
 // move + merging + move
-function moveChips(direction, arrChip){
+export function moveChips(direction, arrChip){
    sortChip(direction, arrChip);
 
    for(const chip of arrChip ){
