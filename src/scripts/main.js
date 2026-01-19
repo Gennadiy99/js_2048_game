@@ -4,9 +4,9 @@
 // const Game = require('../modules/Game.class');
 // const game = new Game();
 
-import { isArrowButton } from './utils.js';
-import { getDirectionVector1 } from './utils.js';
-import { sortChip } from './utils.js';
+// ?import { isArrowButton } from './utils.js'; - to main refactor
+// import { getDirectionVector1 } from './utils.js';- to game2048
+// import { sortChip } from './utils.js'; - to game2048
 
 // array all cells field - *
 //? const cellArr = []; - moved to game2048
@@ -43,9 +43,9 @@ import { sortChip } from './utils.js';
 } */
 
 // Array Obj Chip -
-//? const arrChip = [];- moved to utils
+//? const arrChip = [];- moved to game2048.js
 
-//? Creare Obj - chip - * - moved to game2048
+//? Creare Obj - chip - moved to game2048.js
 /* function createChip() {
   const cell = getCellEmpty();
 
@@ -58,7 +58,7 @@ import { sortChip } from './utils.js';
   arrChip.push(chip);
 }
  */
-//? variable for board (html) - moved to utils
+//? variable for board (html) - moved to utils.js
 // const board = document.querySelector('.game-field');
 
 //? create HTML Chip. - moved to utils
@@ -82,99 +82,100 @@ import { sortChip } from './utils.js';
 
   board.append(div);
 }
+ */
+//? moved to utils
+// function renderHtmlChip(arrChip) {
+//   document.querySelectorAll('.chipHtml').forEach(ch=> ch.remove());
 
-function renderHtmlChip(arrChip) {
-  document.querySelectorAll('.chipHtml').forEach(ch=> ch.remove());
-
-  for(const chip of arrChip){
-    createHtmlChip(chip);
-  }
-} */
+//   for(const chip of arrChip){
+//     createHtmlChip(chip);
+//   }
+// }
 
 //? get cell to move - moved to utils
 // function getCell(row, col){
 //   return cellArr.find((cell) => cell.row === row && cell.col === col || null);
 // }
 
-// move of Chip
+//? move of Chip - moved to game2048
 
-function moveOneChip(chip, direction){
-  const vector = getDirectionVector1(direction);
+// function moveOneChip(chip, direction){
+//   const vector = getDirectionVector1(direction);
 
-  if(!vector) return;
+//   if(!vector) return;
 
-  let currentCell = chip.cell;
+//   let currentCell = chip.cell;
 
-  while(true){
-    const nextRow = currentCell.row + vector.row;
-    const nextCol = currentCell.col + vector.col;
+//   while(true){
+//     const nextRow = currentCell.row + vector.row;
+//     const nextCol = currentCell.col + vector.col;
 
-    const nextCell =  getCell(nextRow, nextCol);
+//     const nextCell =  getCell(nextRow, nextCol);
 
-    if(!nextCell) break;
-    if(!nextCell.isEmpty) break;
+//     if(!nextCell) break;
+//     if(!nextCell.isEmpty) break;
 
-    currentCell.tile = null;
+//     currentCell.tile = null;
 
-    chip.cell = nextCell;
-    nextCell.tile = chip;
+//     chip.cell = nextCell;
+//     nextCell.tile = chip;
 
-    currentCell = nextCell;
-  }
-}
+//     currentCell = nextCell;
+//   }
+// }
 
-// merging of chips
-function margeChips(chip, direction){
-  const vector = getDirectionVector1(direction);
+//? merging of chips - moved to game2048
+// function margeChips(chip, direction){
+//   const vector = getDirectionVector1(direction);
 
-  if(!vector) return;
+//   if(!vector) return;
 
-  let currentCell = chip.cell;
-  const nextRow = currentCell.row + vector.row;
-  const nextCol = currentCell.col + vector.col;
-  const nextCell =  getCell(nextRow, nextCol);
+//   let currentCell = chip.cell;
+//   const nextRow = currentCell.row + vector.row;
+//   const nextCol = currentCell.col + vector.col;
+//   const nextCell =  getCell(nextRow, nextCol);
 
-  if(!nextCell) return;
+//   if(!nextCell) return;
 
-  if(!nextCell.isEmpty){
+//   if(!nextCell.isEmpty){
 
-    if(nextCell.tile.value === chip.value && !nextCell.tile.marg
-      && !chip.marg){
-        const tileToRemove = nextCell.tile;
+//     if(nextCell.tile.value === chip.value && !nextCell.tile.marg
+//       && !chip.marg){
+//         const tileToRemove = nextCell.tile;
 
-        chip.value *=2;
-        currentCell.tile = null;
-        chip.cell = nextCell;
-        nextCell.tile = chip;
-        chip.marg = true;
+//         chip.value *=2;
+//         currentCell.tile = null;
+//         chip.cell = nextCell;
+//         nextCell.tile = chip;
+//         chip.marg = true;
 
-        const index = arrChip.indexOf(tileToRemove);
-        if (index !== -1) {
-          arrChip.splice(index, 1);
-        }
-      }
-    return;
-  }
-}
-// move + merging + move
-export function moveChips(direction, arrChip){
-   sortChip(direction, arrChip);
+//         const index = arrChip.indexOf(tileToRemove);
+//         if (index !== -1) {
+//           arrChip.splice(index, 1);
+//         }
+//       }
+//     return;
+//   }
+// }
+//? move + merging + move - moved to game2048
+// export function moveChips(direction, arrChip){
+//    sortChip(direction, arrChip);
 
-   for(const chip of arrChip ){
-    moveOneChip(chip, direction);
-  }
-   for(const chip of arrChip ){
-    margeChips(chip, direction);
-  }
-   for(const chip of arrChip ){
-    moveOneChip(chip, direction);
-  }
-}
+//    for(const chip of arrChip ){
+//     moveOneChip(chip, direction);
+//   }
+//    for(const chip of arrChip ){
+//     margeChips(chip, direction);
+//   }
+//    for(const chip of arrChip ){
+//     moveOneChip(chip, direction);
+//   }
+// }
 
-// Reset flags merge
-function resetMergeFlags(){
-  arrChip.forEach(ch => ch.marg = false);
-};
+//? Reset flags merge - moved to game2048
+// function resetMergeFlags(){
+//   arrChip.forEach(ch => ch.marg = false);
+// };
 
 // launch functions by pressing keys
 document.addEventListener('keydown', (ev) => {

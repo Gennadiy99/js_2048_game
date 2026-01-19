@@ -80,7 +80,7 @@ export function random(emptyCells) {
   return emptyCells[index];
 }
 
-// get cell to move
+//? get cell  - moved to game2048.js
 // export function getCell(row, col) {
 //   return cellArr.find(
 //     (cell) => (cell.row === row && cell.col === col) || null,
@@ -132,26 +132,34 @@ export function random(emptyCells) {
 // variable for board (html)
 export const board = document.querySelector('.game-field');
 
-// create HTML Chip.
-export function createHtmlChip(Chip) {
-  if (!Chip) {
-    return;
-  }
+//? create HTML Chip. - moved to game2048.js
+// export function createHtmlChip(Chip) {
+//   if (!Chip) {
+//     return;
+//   }
 
-  const div = document.createElement('div');
+//   const div = document.createElement('div');
 
-  div.classList.add('field-cell', 'field-cell--2', 'chipHtml');
-  div.style.position = 'absolute';
-  div.innerText = Chip.value;
+//   div.classList.add('field-cell', 'field-cell--2', 'chipHtml');
+//   div.style.position = 'absolute';
+//   div.innerText = Chip.value;
 
-  const boardRect = board.getBoundingClientRect();
-  const targCell = board.rows[Chip.cell.row].cells[Chip.cell.col];
-  const cellRect = targCell.getBoundingClientRect();
+//   const boardRect = board.getBoundingClientRect();
+//   const targCell = board.rows[Chip.cell.row].cells[Chip.cell.col];
+//   const cellRect = targCell.getBoundingClientRect();
 
-  div.style.left = cellRect.left - boardRect.left + 'px';
-  div.style.top = cellRect.top - boardRect.top + 'px';
+//   div.style.left = cellRect.left - boardRect.left + 'px';
+//   div.style.top = cellRect.top - boardRect.top + 'px';
 
-  board.append(div);
-}
+//   board.append(div);
+// }
+//? clear field - moved to game2048.js into method
+// function renderHtmlChip(arrChip) {
+//   document.querySelectorAll('.chipHtml').forEach(ch=> ch.remove());
+
+//   for(const chip of arrChip){
+//     createHtmlChip(chip);
+//   }
+// }
 
 //! Как создать в классе Game методы

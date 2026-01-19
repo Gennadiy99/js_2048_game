@@ -1,13 +1,10 @@
 import { Tile } from './utils.js';
 import { createCellsField } from './utils.js';
 import { random } from './utils.js';
-// import { getCell } from './utils.js';
 import { sortChip } from './utils.js';
-// import { moveChips } from './utils.js';
-// import { moveOneChip } from './utils.js';
 import { board } from './utils.js';
-import { createHtmlChip } from './utils.js';
-import { getDirectionVector1} from './utils.js';
+// import { createHtmlChip } from './utils.js';
+import { getDirectionVector1 } from './utils.js';
 
 export class Game {
   constructor() {
@@ -155,4 +152,38 @@ export class Game {
   start() {}
 
   restart() {}
+
+  resetMergeFlags() {
+    this.arrChip.forEach((ch) => (ch.marg = false));
+  }
+
+  // create HTML Chip.
+  #createHtmlChip(Chip) {
+    if (!Chip) {
+      return;
+    }
+
+    const div = document.createElement('div');
+
+    div.classList.add('field-cell', 'field-cell--2', 'chipHtml');
+    div.style.position = 'absolute';
+    div.innerText = Chip.value;
+
+    const boardRect = board.getBoundingClientRect();
+    const targCell = board.rows[Chip.cell.row].cells[Chip.cell.col];
+    const cellRect = targCell.getBoundingClientRect();
+
+    div.style.left = cellRect.left - boardRect.left + 'px';
+    div.style.top = cellRect.top - boardRect.top + 'px';
+
+    board.append(div);
+  }
+
+  renderHtmlChip() {
+    document.querySelectorAll('.chipHtml').forEach((ch) => ch.remove());
+
+    for (const chip of this.arrChip) {
+      this.#createHtmlChip(chip);
+    }
+  }
 }
