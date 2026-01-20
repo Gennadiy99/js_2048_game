@@ -4,7 +4,6 @@ import { random } from './utils.js';
 import { sortChip } from './utils.js';
 import { board } from './utils.js';
 import { scoreHtml } from './utils.js';
-// import { createHtmlChip } from './utils.js';
 import { getDirectionVector1 } from './utils.js';
 
 export class Game {
@@ -12,11 +11,6 @@ export class Game {
     this.cellArr = createCellsField(); // array all cells field
     this.arrChip = []; // Array Obj Chip
     this.score = 0;
-  }
-
-  #addScore(value) {
-    this.score += value;
-    scoreHtml.textContent = this.score;
   }
 
   // get random emp
@@ -121,8 +115,7 @@ export class Game {
         const tileToRemove = nextCell.tile;
 
         chip.value *= 2;
-        this.#addScore(chip.value);
-        // scoreHtml.textContent = Number(scoreHtml.textContent) + chip.value; //score game
+        this.#getScore(chip.value);
 
         currentCell.tile = null;
         chip.cell = nextCell;
@@ -156,14 +149,23 @@ export class Game {
 
   getState() {}
 
-  getScore() {}
+  #getScore(value) {
+    this.score += value;
+    scoreHtml.textContent = this.score;
+  }
 
   getStatus() {}
 
   start() {}
 
   restart() {
-    document.querySelectorAll('.chipHtml').forEach((ch) => ch.remove());
+    // document.querySelectorAll('.chipHtml').forEach((ch) => ch.remove());
+    this.arrChip = [];
+    this.score = 0;
+
+    this.createChip();
+    this.createChip();
+    this.renderHtmlChip();
   }
 
   resetMergeFlags() {
