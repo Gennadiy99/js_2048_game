@@ -1,9 +1,15 @@
+'use strict';
 import { Game } from './game2048.js';
 import { isArrowButton } from './utils.js';
 
 const game = new Game();
-// game.createChip();
-// console.log(game.cellArr, game.arrChip);
+
+const moveMap = {
+  ArrowUp: () => game.moveUp(),
+  ArrowDown: () => game.moveDown(),
+  ArrowLeft: () => game.moveLeft(),
+  ArrowRight: () => game.moveRight(),
+};
 
 document.addEventListener('keydown', (ev) => {
   const direction = ev.key; // direction arrow.
@@ -12,20 +18,14 @@ document.addEventListener('keydown', (ev) => {
     return;
   }
 
-  if (direction === 'ArrowUp') {
-    game.moveUp(direction);
-  }
-  if (direction === 'ArrowDown') {
-    game.moveDown(direction);
-  }
-  if (direction === 'ArrowLeft') {
-    game.moveLeft(direction);
-  }
-  if (direction === 'ArrowRight') {
-    game.moveRight(direction);
-  }
+  moveMap[direction]();
 
   game.resetMergeFlags();
   game.createChip(); // OBJ Chip
   game.renderHtmlChip();
 });
+
+//  ! Важно: Этот блок веременный
+//  ? Нужно обсудить реализацию
+// Обычная заметка (дополнительная)
+// TODO ВАЖНЫЙ коментарий- Добавить Логирование.
