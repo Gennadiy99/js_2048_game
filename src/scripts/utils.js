@@ -80,8 +80,6 @@ export function random(emptyCells) {
   return emptyCells[index];
 }
 
-// variable for board (html)
-export const board = document.querySelector('.game-field');
-export let scoreHtml = document.querySelector('.game-score');
+
 
 //! Как создать в классе Game методы

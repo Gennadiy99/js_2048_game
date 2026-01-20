@@ -2,8 +2,8 @@ import { Tile } from './utils.js';
 import { createCellsField } from './utils.js';
 import { random } from './utils.js';
 import { sortChip } from './utils.js';
-import { board } from './utils.js';
-import { scoreHtml } from './utils.js';
+import { board } from './utils-html.js';
+import { scoreHtml } from './utils-html.js';
 import { getDirectionVector1 } from './utils.js';
 
 export class Game {
@@ -159,9 +159,9 @@ export class Game {
   start() {}
 
   restart() {
-    // document.querySelectorAll('.chipHtml').forEach((ch) => ch.remove());
     this.arrChip = [];
     this.score = 0;
+    scoreHtml.textContent = 0;
 
     this.createChip();
     this.createChip();
