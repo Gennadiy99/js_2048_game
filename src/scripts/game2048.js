@@ -3,6 +3,7 @@ import { createCellsField } from './utils.js';
 import { random } from './utils.js';
 import { sortChip } from './utils.js';
 import { board } from './utils.js';
+import { scoreHtml } from './utils.js';
 // import { createHtmlChip } from './utils.js';
 import { getDirectionVector1 } from './utils.js';
 
@@ -10,9 +11,16 @@ export class Game {
   constructor() {
     this.cellArr = createCellsField(); // array all cells field
     this.arrChip = []; // Array Obj Chip
+    this.score = 0;
   }
 
-  // get random empty cell
+  #addScore(value) {
+    this.score += value;
+    scoreHtml.textContent = this.score;
+  }
+
+  // get random emp
+  // ty cell
   #getRandomEmptyCell() {
     const emptyCells = [];
 
@@ -113,6 +121,9 @@ export class Game {
         const tileToRemove = nextCell.tile;
 
         chip.value *= 2;
+        this.#addScore(chip.value);
+        // scoreHtml.textContent = Number(scoreHtml.textContent) + chip.value; //score game
+
         currentCell.tile = null;
         chip.cell = nextCell;
         nextCell.tile = chip;
@@ -151,7 +162,9 @@ export class Game {
 
   start() {}
 
-  restart() {}
+  restart() {
+    document.querySelectorAll('.chipHtml').forEach((ch) => ch.remove());
+  }
 
   resetMergeFlags() {
     this.arrChip.forEach((ch) => (ch.marg = false));

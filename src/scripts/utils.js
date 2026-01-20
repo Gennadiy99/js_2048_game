@@ -82,5 +82,7 @@ export function random(emptyCells) {
 
 // variable for board (html)
 export const board = document.querySelector('.game-field');
+export let scoreHtml = document.querySelector('.game-score');
+console.log(`Property teg span: `, scoreHtml);
 
 //! Как создать в классе Game методы

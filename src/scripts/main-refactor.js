@@ -1,6 +1,7 @@
 'use strict';
 import { Game } from './game2048.js';
 import { isArrowButton } from './utils.js';
+// import { scoupHtml } from './utils.js';
 
 const game = new Game();
 
@@ -24,6 +25,8 @@ document.addEventListener('keydown', (ev) => {
   game.createChip(); // OBJ Chip
   game.renderHtmlChip();
 });
+
+// scoupHtml.addEventListener('click', () => game.restart());
 
 //  ! Важно: Этот блок веременный
 //  ? Нужно обсудить реализацию
