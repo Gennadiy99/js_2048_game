@@ -147,7 +147,35 @@ export class Game {
     this.#move('ArrowDown');
   }
 
-  getState() {}
+  saveState() {
+    const state = {
+      score: this.score,
+      tiles: this.arrChip.map((chip) => ({
+        row: chip.cell.row,
+        col: chip.cell.col,
+        value: chip.value,
+      })),
+    };
+    localStorage.setItem('gameState', JSON.stringify(state));
+  }
+
+  getState() {
+    const gameData = JSON.parse(localStorage.getItem('gameState'));
+    if (!gameData) {
+      return false;
+    }
+    this.restart();
+    this.score = gameData.score;
+
+    for (const t of gameData.tiles) {
+      const cell = this.#getCell(t.row, t.col);
+      const chip = new Tile(cell);
+      chip.value = t.value;
+      this.arrChip.push(chip);
+    }
+    this.renderHtmlChip();
+    return true;
+  }
 
   #getScore(value) {
     this.score += value;

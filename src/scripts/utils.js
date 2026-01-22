@@ -73,6 +73,18 @@ export function createCellsField() {
   }
   return cells;
 }
+//! Переделака обьектов для сохранения в локал сторадж
+// cells.push({
+//         row: row,
+//         col: col,
+//         tile: {
+//           row: null,
+//           col: null,
+//         },
+//         get isEmpty() {
+//           return this.tile.row === null && this.tile.col === null;
+//         },
+//       });
 
 // random empty cell
 export function random(emptyCells) {
