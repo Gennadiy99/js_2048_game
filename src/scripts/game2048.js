@@ -1,10 +1,13 @@
-import { Tile } from './utils.js';
-import { createCellsField } from './utils.js';
-import { random } from './utils.js';
-import { sortChip } from './utils.js';
-import { board } from './utils-html.js';
-import { scoreHtml } from './utils-html.js';
-import { getDirectionVector1 } from './utils.js';
+import {
+  Tile,
+  createCellsField,
+  random,
+  sortChip,
+  getDirectionVector1,
+} from './utils.js';
+
+import { board, scoreHtml } from './utils-html.js';
+// import { scoreHtml } from './utils-html.js';
 
 export class Game {
   constructor() {
@@ -16,13 +19,14 @@ export class Game {
   // get random emp
   // ty cell
   #getRandomEmptyCell() {
-    const emptyCells = [];
+    // const emptyCells = [];
 
-    for (const cell of this.cellArr) {
-      if (cell.isEmpty) {
-        emptyCells.push(cell);
-      }
-    }
+    // for (const cell of this.cellArr) {
+    //   if (cell.isEmpty) {
+    //     emptyCells.push(cell);
+    //   }
+    // }
+    const emptyCells = this.cellArr.filter((cell) => cell.isEmpty);
 
     if (emptyCells.length === 0) return null;
 
