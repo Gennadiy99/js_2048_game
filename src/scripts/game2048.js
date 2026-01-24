@@ -7,7 +7,6 @@ import {
 } from './utils.js';
 
 import { board, scoreHtml } from './utils-html.js';
-// import { scoreHtml } from './utils-html.js';
 
 export class Game {
   constructor() {
@@ -16,16 +15,8 @@ export class Game {
     this.score = 0;
   }
 
-  // get random emp
-  // ty cell
+  // get random empty cell
   #getRandomEmptyCell() {
-    // const emptyCells = [];
-
-    // for (const cell of this.cellArr) {
-    //   if (cell.isEmpty) {
-    //     emptyCells.push(cell);
-    //   }
-    // }
     const emptyCells = this.cellArr.filter((cell) => cell.isEmpty);
 
     if (emptyCells.length === 0) return null;
@@ -168,7 +159,6 @@ export class Game {
     if (!gameData) {
       return false;
     }
-    this.restart();
     this.score = gameData.score;
 
     for (const t of gameData.tiles) {
@@ -192,8 +182,10 @@ export class Game {
 
   restart() {
     this.arrChip = [];
+    this.cellArr.forEach((cell) => (cell.tile = null));
     this.score = 0;
     scoreHtml.textContent = 0;
+    localStorage.removeItem('gameState');
 
     this.createChip();
     this.createChip();
