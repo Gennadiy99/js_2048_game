@@ -73,25 +73,15 @@ export function createCellsField() {
   }
   return cells;
 }
-//! Переделака обьектов для сохранения в локал сторадж
-// cells.push({
-//         row: row,
-//         col: col,
-//         tile: {
-//           row: null,
-//           col: null,
-//         },
-//         get isEmpty() {
-//           return this.tile.row === null && this.tile.col === null;
-//         },
-//       });
 
 // random empty cell
 export function random(emptyCells) {
   const index = Math.floor(Math.random() * emptyCells.length);
   return emptyCells[index];
 }
-
-
-
-//! Как создать в классе Game методы
+// export function removeTileMarg(tile, arrChip) {
+//   const index = arrChip.indexOf(tile);
+//   if (index !== -1) {
+//     this.arrChip.splice(index, 1);
+//   }
+// }
