@@ -5,8 +5,6 @@ export let scoreHtml = document.querySelector('.game-score');
 // variable for Btn Start
 export const startBtn = document.querySelector('.start');
 const textStart = 'Press "Start" to begin game. Good luck!';
-// startBtn.textContent
-// startBtn.textContent = 'Restart';
 
 const collorMap = {
   2: 'field-cell--2',

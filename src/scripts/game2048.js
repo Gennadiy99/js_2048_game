@@ -8,7 +8,7 @@ import {
   removeTileMarg,
 } from './utils.js';
 
-import { board, scoreHtml, startMessage } from './utils-html.js';
+import { board, scoreHtml, startBtn } from './utils-html.js';
 
 export class Game {
   constructor() {
@@ -190,6 +190,9 @@ export class Game {
   }
 
   saveState() {
+    const btnStyle = startBtn.className;
+    // console.log('Стиль из кнопки старт: ', btnStyle);
+
     const state = {
       score: this.score,
       tiles: this.arrChip.map((chip) => ({
@@ -197,19 +200,20 @@ export class Game {
         col: chip.cell.col,
         value: chip.value,
         collor: chip.collor,
+        btn: btnStyle,
       })),
     };
     localStorage.setItem('gameState', JSON.stringify(state));
   }
 
   getState() {
-    const gameData = JSON.parse(localStorage.getItem('gameState'));
-    if (!gameData) {
+    const dataGame = JSON.parse(localStorage.getItem('gameState'));
+    if (!dataGame) {
       return false;
     }
-    this.score = gameData.score;
+    this.score = dataGame.score;
 
-    for (const t of gameData.tiles) {
+    for (const t of dataGame.tiles) {
       const cell = this.#getCell(t.row, t.col);
       const chip = new Tile(cell);
       chip.value = t.value;
@@ -241,6 +245,7 @@ export class Game {
     localStorage.removeItem('gameState'); // removing date from localStorage
     this.renderHtmlChip();
     this.isWin = false;
+    //! только победа стирается а проигрыш ?
   }
 
   resetMergeFlags() {

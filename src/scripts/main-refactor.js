@@ -11,7 +11,13 @@ import {
 } from './utils-html.js';
 
 const game = new Game();
-game.getState();
+// game.getState();
+
+if (game.getState()) {
+  deleteMessagesAll();
+  startBtn.textContent = 'Restart';
+  startBtn.classList.replace('start-mode', 'restart-mode');
+}
 
 const moveMap = {
   ArrowUp: () => game.moveUp(),
@@ -28,11 +34,11 @@ document.addEventListener('keydown', (ev) => {
 
   if (!isArrowButton(direction)) {
     return;
-  }
+  } // checking direction
 
   if (!moveMap[direction]()) {
     return;
-  }
+  } // get moving
 
   game.resetMergeFlags();
   game.createChip();
@@ -49,8 +55,7 @@ document.addEventListener('keydown', (ev) => {
   }
 });
 
-// click staret button
-
+// click start button
 startBtn.addEventListener('click', () => {
   if (startBtn.classList.contains('start-mode')) {
     deleteMessagesAll();
@@ -68,9 +73,8 @@ startBtn.addEventListener('click', () => {
   }
 });
 
-//! Ход возможен, если после хода изменена хотя бы одна ячейка
-//? Вероятность появления числа 4 составляет 10%
-//? Если в любой ячейке отображается значение 2048, должно отображаться сообщение о победе.
+//! Ход возможен.
+//? Если.
 // Обычная заметка (дополнительная)
 //TODO Разобрать все методы Изменить метод getState !?
 //TODO Переделать под анимацию!
