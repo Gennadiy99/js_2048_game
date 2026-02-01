@@ -4,16 +4,43 @@ import {
   random,
   sortChip,
   getDirectionVector1,
-  // removeTileMarg,
+  arrVector,
+  removeTileMarg,
 } from './utils.js';
 
-import { board, scoreHtml } from './utils-html.js';
+import { board, scoreHtml, startMessage } from './utils-html.js';
 
 export class Game {
   constructor() {
     this.cellArr = createCellsField(); // array all cells field
     this.arrChip = []; // Array Obj Chip
     this.score = 0;
+    this.isWin = false;
+  }
+
+  getFilledCells() {
+    return this.cellArr.length === this.arrChip.length;
+  } // for message Lose ***
+
+  // функция для проверки смежных чипом на одинаковое значение.
+  canMove() {
+    for (const chip of this.arrChip) {
+      const curentCell = chip.cell;
+
+      for (const vec of arrVector) {
+        let step = getDirectionVector1(vec);
+
+        const nextRow = curentCell.row + step.row;
+        const nextCol = curentCell.col + step.col;
+        const nextCell = this.#getCell(nextRow, nextCol);
+
+        if (nextCell && nextCell.tile.value === chip.value) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   // get random empty cell
@@ -33,7 +60,9 @@ export class Game {
       return null;
     }
 
-    const chip = new Tile(cell);
+    let value = Math.random() < 0.1 ? 4 : 2;
+    console.log('созданна фишка: ', value);
+    const chip = new Tile(cell, value);
 
     this.arrChip.push(chip);
   }
@@ -103,6 +132,7 @@ export class Game {
 
     return moved; // new
   }
+
   // merging of chips
   #margeChips(chip, direction) {
     const vector = getDirectionVector1(direction);
@@ -129,17 +159,15 @@ export class Game {
       const tileToRemove = nextCell.tile;
 
       chip.value *= 2;
-      this.#getScore(chip.value);
+      this.#calculationScore(chip.value);
 
       currentCell.tile = null;
       chip.cell = nextCell;
       nextCell.tile = chip;
       chip.marg = true;
 
-      const index = this.arrChip.indexOf(tileToRemove);
-      if (index !== -1) {
-        this.arrChip.splice(index, 1);
-      }
+      removeTileMarg(tileToRemove, this.arrChip);
+
       return true;
     }
     return false;
@@ -168,6 +196,7 @@ export class Game {
         row: chip.cell.row,
         col: chip.cell.col,
         value: chip.value,
+        collor: chip.collor,
       })),
     };
     localStorage.setItem('gameState', JSON.stringify(state));
@@ -184,31 +213,34 @@ export class Game {
       const cell = this.#getCell(t.row, t.col);
       const chip = new Tile(cell);
       chip.value = t.value;
+      chip.collor = t.collor;
       this.arrChip.push(chip);
     }
     this.renderHtmlChip();
     return true;
   }
 
-  #getScore(value) {
+  #calculationScore(value) {
     this.score += value;
     scoreHtml.textContent = this.score;
   }
 
   getStatus() {}
 
-  start() {}
-
-  restart() {
-    this.arrChip = [];
-    this.cellArr.forEach((cell) => (cell.tile = null));
-    this.score = 0;
-    scoreHtml.textContent = 0;
-    localStorage.removeItem('gameState');
-
+  start() {
     this.createChip();
     this.createChip();
     this.renderHtmlChip();
+  }
+
+  restart() {
+    this.arrChip = []; // clear array Chip
+    this.cellArr.forEach((cell) => (cell.tile = null)); // Removes tiles from the field cells
+    this.score = 0; // clear score
+    scoreHtml.textContent = 0; // clear score from HTML
+    localStorage.removeItem('gameState'); // removing date from localStorage
+    this.renderHtmlChip();
+    this.isWin = false;
   }
 
   resetMergeFlags() {

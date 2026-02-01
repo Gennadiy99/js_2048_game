@@ -4,6 +4,9 @@ export const board = document.querySelector('.game-field');
 export let scoreHtml = document.querySelector('.game-score');
 // variable for Btn Start
 export const startBtn = document.querySelector('.start');
+const textStart = 'Press "Start" to begin game. Good luck!';
+// startBtn.textContent
+// startBtn.textContent = 'Restart';
 
 const collorMap = {
   2: 'field-cell--2',
@@ -29,11 +32,20 @@ const messageLose = document.querySelector('.message-lose');
 const messageWin = document.querySelector('.message-win');
 const messageStart = document.querySelector('.message-start');
 
-let arrClassMessage = [messageLose, messageWin, messageStart];
+const messageAll = [messageLose, messageWin, messageStart];
 
-export function message() {
-  arrClassMessage.forEach((message) => message.classList.add('hidden'));
-  // messageStart.forEach((message) => message.classList.toggle('hidden'));
-  messageStart.classList.toggle('hidden');
+export function winMessage() {
+  messageWin.classList.remove('hidden');
+}
 
+export function loseMessage() {
+  messageLose.classList.remove('hidden');
+}
+
+export function startMessage() {
+  messageStart.classList.remove('hidden');
+}
+
+export function deleteMessagesAll() {
+  messageAll.forEach((message) => message.classList.add('hidden'));
 }

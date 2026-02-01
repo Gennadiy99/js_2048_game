@@ -4,6 +4,9 @@ export function isArrowButton(direction) {
     direction,
   );
 }
+// array vector
+
+export const arrVector = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
 // object vector  + move
 const vectors = {
@@ -31,29 +34,16 @@ export function sortChip(direction, arrChip) {
   if (!condition) return null;
   arrChip.sort(condition);
 }
-//! Новые привязки к mein-refactor.js
+
 // template Obj Chip
 export class Tile {
-  constructor(cell) {
-    this.value = 2;
+  constructor(cell, value) {
+    this.value = value;
     this.cell = cell;
     this.marg = false;
     cell.tile = this;
   }
 }
-
-// creation cell for field  (Obj)
-// export class Cell {
-//   constructor(row,col){
-//     this.row = row;
-//     this.col = col;
-//     this.tile = null;
-//   }
-
-//   isEmpty() {
-//     return this.tile === null;
-//   };
-// };
 
 // creation of all field cells (Obj)- *
 export function createCellsField() {
@@ -79,9 +69,9 @@ export function random(emptyCells) {
   const index = Math.floor(Math.random() * emptyCells.length);
   return emptyCells[index];
 }
-// export function removeTileMarg(tile, arrChip) {
-//   const index = arrChip.indexOf(tile);
-//   if (index !== -1) {
-//     this.arrChip.splice(index, 1);
-//   }
-// }
+export function removeTileMarg(tile, arrChip) {
+  const index = arrChip.indexOf(tile);
+  if (index !== -1) {
+    arrChip.splice(index, 1);
+  }
+}

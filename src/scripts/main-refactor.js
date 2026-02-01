@@ -1,12 +1,17 @@
 'use strict';
 import { Game } from './game2048.js';
 import { isArrowButton } from './utils.js';
-import { startBtn } from './utils-html.js';
-import { applyCollorChip } from './utils-html.js';
-import { message } from './utils-html.js';
+import {
+  startBtn,
+  applyCollorChip,
+  winMessage,
+  loseMessage,
+  deleteMessagesAll,
+  startMessage,
+} from './utils-html.js';
 
 const game = new Game();
-game.getState() || game.restart();
+game.getState();
 
 const moveMap = {
   ArrowUp: () => game.moveUp(),
@@ -16,6 +21,9 @@ const moveMap = {
 };
 
 document.addEventListener('keydown', (ev) => {
+  if (game.isWin) {
+    return;
+  }
   const direction = ev.key; // direction arrow.
 
   if (!isArrowButton(direction)) {
@@ -27,24 +35,41 @@ document.addEventListener('keydown', (ev) => {
   }
 
   game.resetMergeFlags();
-  game.createChip(); // OBJ Chip
-  applyCollorChip(game.arrChip); //? for collor Chip
+  game.createChip();
+  applyCollorChip(game.arrChip);
   game.renderHtmlChip();
   game.saveState();
 
-  if (game.score >= 512) {
-    message();
+  if (game.score >= 2048) {
+    winMessage();
+    game.isWin = true;
+  }
+  if (game.getFilledCells() && !game.canMove()) {
+    loseMessage();
   }
 });
 
+// click staret button
+
 startBtn.addEventListener('click', () => {
-  game.restart();
-  message();
+  if (startBtn.classList.contains('start-mode')) {
+    deleteMessagesAll();
+    game.start();
+
+    startBtn.textContent = 'Restart';
+    startBtn.classList.replace('start-mode', 'restart-mode');
+  } else if (startBtn.classList.contains('restart-mode')) {
+    game.restart();
+    deleteMessagesAll();
+    startMessage();
+
+    startBtn.textContent = 'Start';
+    startBtn.classList.replace('restart-mode', 'start-mode');
+  }
 });
 
 //! Ход возможен, если после хода изменена хотя бы одна ячейка
 //? Вероятность появления числа 4 составляет 10%
-//? Нужно сделать изменение Цвета при слияние фишек
 //? Если в любой ячейке отображается значение 2048, должно отображаться сообщение о победе.
 // Обычная заметка (дополнительная)
 //TODO Разобрать все методы Изменить метод getState !?
