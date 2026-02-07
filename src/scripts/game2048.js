@@ -16,6 +16,7 @@ export class Game {
     this.arrChip = []; // Array Obj Chip
     this.score = 0;
     this.isWin = false;
+    this.isLose = false;
   }
 
   getFilledCells() {
@@ -159,6 +160,7 @@ export class Game {
       const tileToRemove = nextCell.tile;
 
       chip.value *= 2;
+
       this.#calculationScore(chip.value);
 
       currentCell.tile = null;
@@ -189,6 +191,13 @@ export class Game {
     return this.#move('ArrowDown');
   }
 
+  moveMap = {
+    ArrowUp: () => this.moveUp(),
+    ArrowDown: () => this.moveDown(),
+    ArrowLeft: () => this.moveLeft(),
+    ArrowRight: () => this.moveRight(),
+  };
+
   saveState() {
     const btnStyle = startBtn.className;
     // console.log('Стиль из кнопки старт: ', btnStyle);
@@ -205,7 +214,7 @@ export class Game {
     };
     localStorage.setItem('gameState', JSON.stringify(state));
   }
-
+  // ! Нужен ли тут по SOLID метод this.renderHtmlChip() или его вынести отдельно?
   getState() {
     const dataGame = JSON.parse(localStorage.getItem('gameState'));
     if (!dataGame) {
@@ -223,6 +232,26 @@ export class Game {
     this.renderHtmlChip();
     return true;
   }
+  // TODO проба новой реализации вост
+  // getStateNew() {
+  //   const dataGame = JSON.parse(localStorage.getItem('gameState'));
+  //   return dataGame;
+  // }
+
+  // applyState(dataGame) {
+  //   if (!dataGame) return false;
+
+  //   this.score = dataGame.score;
+
+  //   for (const t of dataGame.tiles) {
+  //     const cell = this.#getCell(t.row, t.col);
+  //     const chip = new Tile(cell);
+  //     chip.value = t.value;
+  //     chip.collor = t.collor;
+  //     this.arrChip.push(chip);
+  //   }
+  //   return true;
+  // }
 
   #calculationScore(value) {
     this.score += value;
@@ -245,7 +274,7 @@ export class Game {
     localStorage.removeItem('gameState'); // removing date from localStorage
     this.renderHtmlChip();
     this.isWin = false;
-    //! только победа стирается а проигрыш ?
+    this.isLose = false;
   }
 
   resetMergeFlags() {

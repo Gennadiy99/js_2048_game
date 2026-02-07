@@ -11,7 +11,6 @@ import {
 } from './utils-html.js';
 
 const game = new Game();
-// game.getState();
 
 if (game.getState()) {
   deleteMessagesAll();
@@ -19,15 +18,15 @@ if (game.getState()) {
   startBtn.classList.replace('start-mode', 'restart-mode');
 }
 
-const moveMap = {
-  ArrowUp: () => game.moveUp(),
-  ArrowDown: () => game.moveDown(),
-  ArrowLeft: () => game.moveLeft(),
-  ArrowRight: () => game.moveRight(),
-};
+// const moveMap = {
+//   ArrowUp: () => game.moveUp(),
+//   ArrowDown: () => game.moveDown(),
+//   ArrowLeft: () => game.moveLeft(),
+//   ArrowRight: () => game.moveRight(),
+// };
 
 document.addEventListener('keydown', (ev) => {
-  if (game.isWin) {
+  if (game.isWin || game.isLose) {
     return;
   }
   const direction = ev.key; // direction arrow.
@@ -36,7 +35,7 @@ document.addEventListener('keydown', (ev) => {
     return;
   } // checking direction
 
-  if (!moveMap[direction]()) {
+  if (!game.moveMap[direction]()) {
     return;
   } // get moving
 
@@ -52,6 +51,7 @@ document.addEventListener('keydown', (ev) => {
   }
   if (game.getFilledCells() && !game.canMove()) {
     loseMessage();
+    game.isLose = true;
   }
 });
 
@@ -73,11 +73,11 @@ startBtn.addEventListener('click', () => {
   }
 });
 
-//! Ход возможен.
+//! Что делать с методом getStatus ?
+//TODO Переделать под анимацию!
 //? Если.
 // Обычная заметка (дополнительная)
-//TODO Разобрать все методы Изменить метод getState !?
-//TODO Переделать под анимацию!
+//TODO
 //? - Оператор a ||= b 👉 Логическое присваивание OR Логика:
 /* если a truthy → ничего не происходит
 если a falsy → в a запишется b
