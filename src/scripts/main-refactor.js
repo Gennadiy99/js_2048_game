@@ -18,15 +18,13 @@ if (game.getState()) {
   startBtn.classList.replace('start-mode', 'restart-mode');
 }
 
-// const moveMap = {
-//   ArrowUp: () => game.moveUp(),
-//   ArrowDown: () => game.moveDown(),
-//   ArrowLeft: () => game.moveLeft(),
-//   ArrowRight: () => game.moveRight(),
-// };
-
 document.addEventListener('keydown', (ev) => {
-  if (game.isWin || game.isLose) {
+  // if (game.isWin || game.isLose) {
+  //   return;
+  // }
+  // console.log(game.getStatus());
+
+  if (game.getStatus() !== 'playing') {
     return;
   }
   const direction = ev.key; // direction arrow.
@@ -45,7 +43,7 @@ document.addEventListener('keydown', (ev) => {
   game.renderHtmlChip();
   game.saveState();
 
-  if (game.score >= 2048) {
+  if (game.score >= 48) {
     winMessage();
     game.isWin = true;
   }

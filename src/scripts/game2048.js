@@ -62,7 +62,6 @@ export class Game {
     }
 
     let value = Math.random() < 0.1 ? 4 : 2;
-    console.log('созданна фишка: ', value);
     const chip = new Tile(cell, value);
 
     this.arrChip.push(chip);
@@ -232,7 +231,7 @@ export class Game {
     this.renderHtmlChip();
     return true;
   }
-  // TODO проба новой реализации вост
+  // TODO проба новой реализации
   // getStateNew() {
   //   const dataGame = JSON.parse(localStorage.getItem('gameState'));
   //   return dataGame;
@@ -258,7 +257,11 @@ export class Game {
     scoreHtml.textContent = this.score;
   }
 
-  getStatus() {}
+  getStatus() {
+    if (this.isWin) return 'win';
+    if (this.isLose) return 'lose';
+    return 'playing';
+  }
 
   start() {
     this.createChip();
