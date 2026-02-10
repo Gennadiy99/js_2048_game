@@ -12,21 +12,28 @@ import {
 
 const game = new Game();
 
-if (game.getState()) {
+// if (game.getState()) {
+//   deleteMessagesAll();
+//   startBtn.textContent = 'Restart';
+//   startBtn.classList.replace('start-mode', 'restart-mode');
+// }
+
+const dateState = game.getStateNew();
+
+if (dateState) {
+  game.applyState(dateState);
+  game.renderHtmlChip();
+
   deleteMessagesAll();
   startBtn.textContent = 'Restart';
   startBtn.classList.replace('start-mode', 'restart-mode');
 }
 
 document.addEventListener('keydown', (ev) => {
-  // if (game.isWin || game.isLose) {
-  //   return;
-  // }
-  // console.log(game.getStatus());
-
   if (game.getStatus() !== 'playing') {
     return;
   }
+
   const direction = ev.key; // direction arrow.
 
   if (!isArrowButton(direction)) {
@@ -41,23 +48,22 @@ document.addEventListener('keydown', (ev) => {
   game.createChip();
   applyCollorChip(game.arrChip);
   game.renderHtmlChip();
+  game.updateStatus();
   game.saveState();
 
-  if (game.score >= 48) {
+  if (game.getStatus() === 'win') {
     winMessage();
-    game.isWin = true;
   }
-  if (game.getFilledCells() && !game.canMove()) {
+  if (game.getStatus() === 'lose') {
     loseMessage();
-    game.isLose = true;
   }
 });
 
 // click start button
 startBtn.addEventListener('click', () => {
   if (startBtn.classList.contains('start-mode')) {
-    deleteMessagesAll();
     game.start();
+    deleteMessagesAll();
 
     startBtn.textContent = 'Restart';
     startBtn.classList.replace('start-mode', 'restart-mode');

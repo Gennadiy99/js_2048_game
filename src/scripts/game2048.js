@@ -198,9 +198,6 @@ export class Game {
   };
 
   saveState() {
-    const btnStyle = startBtn.className;
-    // console.log('Стиль из кнопки старт: ', btnStyle);
-
     const state = {
       score: this.score,
       tiles: this.arrChip.map((chip) => ({
@@ -208,18 +205,20 @@ export class Game {
         col: chip.cell.col,
         value: chip.value,
         collor: chip.collor,
-        btn: btnStyle,
       })),
     };
     localStorage.setItem('gameState', JSON.stringify(state));
   }
-  // ! Нужен ли тут по SOLID метод this.renderHtmlChip() или его вынести отдельно?
-  getState() {
+
+  // TODO проба новой реализации
+  getStateNew() {
     const dataGame = JSON.parse(localStorage.getItem('gameState'));
-    if (!dataGame) {
-      return false;
-    }
+    return dataGame;
+  }
+
+  applyState(dataGame) {
     this.score = dataGame.score;
+    scoreHtml.textContent = this.score;
 
     for (const t of dataGame.tiles) {
       const cell = this.#getCell(t.row, t.col);
@@ -228,29 +227,7 @@ export class Game {
       chip.collor = t.collor;
       this.arrChip.push(chip);
     }
-    this.renderHtmlChip();
-    return true;
   }
-  // TODO проба новой реализации
-  // getStateNew() {
-  //   const dataGame = JSON.parse(localStorage.getItem('gameState'));
-  //   return dataGame;
-  // }
-
-  // applyState(dataGame) {
-  //   if (!dataGame) return false;
-
-  //   this.score = dataGame.score;
-
-  //   for (const t of dataGame.tiles) {
-  //     const cell = this.#getCell(t.row, t.col);
-  //     const chip = new Tile(cell);
-  //     chip.value = t.value;
-  //     chip.collor = t.collor;
-  //     this.arrChip.push(chip);
-  //   }
-  //   return true;
-  // }
 
   #calculationScore(value) {
     this.score += value;
@@ -261,6 +238,18 @@ export class Game {
     if (this.isWin) return 'win';
     if (this.isLose) return 'lose';
     return 'playing';
+  }
+
+  //  TODO test of a new implementation
+  updateStatus() {
+    if (this.score >= 48) {
+      this.isWin = true;
+      return;
+    }
+    if (this.getFilledCells && !this.canMove) {
+      this.isLose = true;
+      return;
+    }
   }
 
   start() {
