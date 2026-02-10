@@ -17,6 +17,8 @@ export class Game {
     this.score = 0;
     this.isWin = false;
     this.isLose = false;
+
+    console.log('Win : ', this.isWin, 'Win : ', this.isLose);
   }
 
   getFilledCells() {
@@ -244,10 +246,13 @@ export class Game {
   updateStatus() {
     if (this.score >= 2048) {
       this.isWin = true;
+
       return;
     }
-    if (this.getFilledCells && !this.canMove) {
+
+    if (this.getFilledCells() && !this.canMove()) {
       this.isLose = true;
+
       return;
     }
   }

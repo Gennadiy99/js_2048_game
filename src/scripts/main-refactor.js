@@ -17,13 +17,24 @@ const dateState = game.getStateNew();
 if (dateState) {
   game.applyState(dateState);
   game.renderHtmlChip();
+  game.updateStatus();
 
-  deleteMessagesAll();
+  if (game.getStatus() === 'lose') {
+    loseMessage();
+  }
+  if (game.getStatus() === 'win') {
+    winMessage();
+  }
+
+  // deleteMessagesAll();
   startBtn.textContent = 'Restart';
   startBtn.classList.replace('start-mode', 'restart-mode');
 }
 
 document.addEventListener('keydown', (ev) => {
+  console.log(game.getStatus());
+  console.log('Клик на стрелку Клавиатуры');
+
   if (game.getStatus() !== 'playing') {
     return;
   }
