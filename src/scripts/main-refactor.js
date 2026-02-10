@@ -12,12 +12,6 @@ import {
 
 const game = new Game();
 
-// if (game.getState()) {
-//   deleteMessagesAll();
-//   startBtn.textContent = 'Restart';
-//   startBtn.classList.replace('start-mode', 'restart-mode');
-// }
-
 const dateState = game.getStateNew();
 
 if (dateState) {

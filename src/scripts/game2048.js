@@ -23,7 +23,7 @@ export class Game {
     return this.cellArr.length === this.arrChip.length;
   } // for message Lose ***
 
-  // функция для проверки смежных чипом на одинаковое значение.
+  // moveability check function
   canMove() {
     for (const chip of this.arrChip) {
       const curentCell = chip.cell;
@@ -210,7 +210,7 @@ export class Game {
     localStorage.setItem('gameState', JSON.stringify(state));
   }
 
-  // TODO проба новой реализации
+  // TODO test of a new implementation
   getStateNew() {
     const dataGame = JSON.parse(localStorage.getItem('gameState'));
     return dataGame;
@@ -242,7 +242,7 @@ export class Game {
 
   //  TODO test of a new implementation
   updateStatus() {
-    if (this.score >= 48) {
+    if (this.score >= 2048) {
       this.isWin = true;
       return;
     }
