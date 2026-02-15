@@ -17,8 +17,6 @@ export class Game {
     this.score = 0;
     this.isWin = false;
     this.isLose = false;
-
-    console.log('Win : ', this.isWin, 'Win : ', this.isLose);
   }
 
   getFilledCells() {
@@ -253,7 +251,7 @@ export class Game {
   }
 
   updateStatus() {
-    if (this.score >= 2048) {
+    if (this.arrChip.find((chip) => chip.value >= 2048)) {
       this.isWin = true;
 
       return;
