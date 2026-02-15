@@ -8,7 +8,7 @@ import {
   removeTileMarg,
 } from './utils.js';
 
-import { board, scoreHtml, startBtn } from './utils-html.js';
+import { board, scoreHtml, collorMap, startBtn } from './utils-html.js';
 
 export class Game {
   constructor() {
@@ -66,6 +66,7 @@ export class Game {
     let value = Math.random() < 0.1 ? 4 : 2;
     const chip = new Tile(cell, value);
 
+    this.#createHtmlChipNew(chip); // create div-chip
     this.arrChip.push(chip);
   }
 
@@ -159,8 +160,13 @@ export class Game {
       !chip.marg
     ) {
       const tileToRemove = nextCell.tile;
+      const htmlToRemove = nextCell.tile.idObj;
+
+      const chipHtml = document.getElementById(chip.idObj);
 
       chip.value *= 2;
+      chipHtml.textContent = chip.value;
+      chipHtml.classList.add(collorMap[chip.value]);
 
       this.#calculationScore(chip.value);
 
@@ -169,7 +175,8 @@ export class Game {
       nextCell.tile = chip;
       chip.marg = true;
 
-      removeTileMarg(tileToRemove, this.arrChip);
+      removeTileMarg(tileToRemove, this.arrChip); // Chip removed from field
+      document.getElementById(htmlToRemove).remove(); // htmlChip removed from field
 
       return true;
     }
@@ -201,8 +208,10 @@ export class Game {
 
   saveState() {
     const state = {
+      count: Tile.count,
       score: this.score,
       tiles: this.arrChip.map((chip) => ({
+        id: chip.idObj,
         row: chip.cell.row,
         col: chip.cell.col,
         value: chip.value,
@@ -212,8 +221,7 @@ export class Game {
     localStorage.setItem('gameState', JSON.stringify(state));
   }
 
-  // TODO test of a new implementation
-  getStateNew() {
+  getState() {
     const dataGame = JSON.parse(localStorage.getItem('gameState'));
     return dataGame;
   }
@@ -225,10 +233,12 @@ export class Game {
     for (const t of dataGame.tiles) {
       const cell = this.#getCell(t.row, t.col);
       const chip = new Tile(cell);
+      chip.idObj = t.id;
       chip.value = t.value;
       chip.collor = t.collor;
       this.arrChip.push(chip);
     }
+    Tile.count = dataGame.count;
   }
 
   #calculationScore(value) {
@@ -242,7 +252,6 @@ export class Game {
     return 'playing';
   }
 
-  //  TODO test of a new implementation
   updateStatus() {
     if (this.score >= 2048) {
       this.isWin = true;
@@ -259,52 +268,69 @@ export class Game {
 
   start() {
     this.createChip();
-    this.createChip();
-    this.renderHtmlChip();
+    this.createChip(); // созд Chip + html + выводит на доску
   }
 
   restart() {
     this.arrChip = []; // clear array Chip
     this.cellArr.forEach((cell) => (cell.tile = null)); // Removes tiles from the field cells
     this.score = 0; // clear score
-    scoreHtml.textContent = 0; // clear score from HTML
-    localStorage.removeItem('gameState'); // removing date from localStorage
-    this.renderHtmlChip();
     this.isWin = false;
     this.isLose = false;
+    document.querySelectorAll('.chipHtml').forEach((ch) => ch.remove());
+    scoreHtml.textContent = 0; // clear score from HTML
+    localStorage.removeItem('gameState'); // removing date from localStorage
   }
 
   resetMergeFlags() {
     this.arrChip.forEach((ch) => (ch.marg = false));
   }
 
-  // create HTML Chip.
-  #createHtmlChip(Chip) {
+  #createHtmlChipNew(Chip) {
     if (!Chip) {
       return;
     }
 
     const div = document.createElement('div');
 
-    div.classList.add('field-cell', 'field-cell--2', 'chipHtml', Chip.collor);
+    div.classList.add(
+      'field-cell',
+      `field-cell--${Chip.value}`,
+      'chipHtml',
+      'chipHtmlNew',
+      Chip.collor,
+    );
     div.style.position = 'absolute';
     div.innerText = Chip.value;
+    div.id = Chip.idObj;
 
+    this.#applyHtmlChip(Chip, div);
+    board.append(div);
+    setTimeout(() => div.classList.remove('chipHtmlNew'), 500);
+  }
+
+  #applyHtmlChip(Chip, div) {
     const boardRect = board.getBoundingClientRect();
     const targCell = board.rows[Chip.cell.row].cells[Chip.cell.col];
     const cellRect = targCell.getBoundingClientRect();
 
     div.style.left = cellRect.left - boardRect.left + 'px';
     div.style.top = cellRect.top - boardRect.top + 'px';
+  }
 
-    board.append(div);
+  renderMoveHtmlChip() {
+    for (const Chip of this.arrChip) {
+      const div = document.getElementById(Chip.idObj);
+
+      if (div) {
+        this.#applyHtmlChip(Chip, div);
+      }
+    }
   }
 
   renderHtmlChip() {
-    document.querySelectorAll('.chipHtml').forEach((ch) => ch.remove());
-
     for (const chip of this.arrChip) {
-      this.#createHtmlChip(chip);
+      this.#createHtmlChipNew(chip);
     }
   }
 }

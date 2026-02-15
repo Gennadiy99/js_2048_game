@@ -6,7 +6,7 @@ export let scoreHtml = document.querySelector('.game-score');
 export const startBtn = document.querySelector('.start');
 const textStart = 'Press "Start" to begin game. Good luck!';
 
-const collorMap = {
+export const collorMap = {
   2: 'field-cell--2',
   4: 'field-cell--4',
   8: 'field-cell--8',

@@ -12,7 +12,7 @@ import {
 
 const game = new Game();
 
-const dateState = game.getStateNew();
+const dateState = game.getState();
 
 if (dateState) {
   game.applyState(dateState);
@@ -26,15 +26,11 @@ if (dateState) {
     winMessage();
   }
 
-  // deleteMessagesAll();
   startBtn.textContent = 'Restart';
   startBtn.classList.replace('start-mode', 'restart-mode');
 }
 
 document.addEventListener('keydown', (ev) => {
-  console.log(game.getStatus());
-  console.log('Клик на стрелку Клавиатуры');
-
   if (game.getStatus() !== 'playing') {
     return;
   }
@@ -50,9 +46,10 @@ document.addEventListener('keydown', (ev) => {
   } // get moving
 
   game.resetMergeFlags();
+  game.renderMoveHtmlChip();
   game.createChip();
   applyCollorChip(game.arrChip);
-  game.renderHtmlChip();
+  // game.renderHtmlChip();
   game.updateStatus();
   game.saveState();
 
@@ -82,11 +79,11 @@ startBtn.addEventListener('click', () => {
   }
 });
 
-//! Что делать с методом getStatus ?
-//TODO Переделать под анимацию!
-//? Если.
+//! Какой то комент
+//TODO Какой то комент
+//? Какой то комент
 // Обычная заметка (дополнительная)
-//TODO
+
 //? - Оператор a ||= b 👉 Логическое присваивание OR Логика:
 /* если a truthy → ничего не происходит
 если a falsy → в a запишется b

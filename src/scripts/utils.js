@@ -37,7 +37,10 @@ export function sortChip(direction, arrChip) {
 
 // template Obj Chip
 export class Tile {
+  static count = 0;
+
   constructor(cell, value) {
+    this.idObj = Tile.count++;
     this.value = value;
     this.cell = cell;
     this.marg = false;
