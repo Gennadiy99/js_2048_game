@@ -22,12 +22,13 @@ if (dateState) {
   if (game.getStatus() === 'lose') {
     loseMessage();
   }
+
   if (game.getStatus() === 'win') {
     winMessage();
   }
 
   startBtn.textContent = 'Restart';
-  startBtn.classList.replace('start-mode', 'restart-mode');
+  startBtn.classList.replace('start-mode', 'restart');
 }
 
 document.addEventListener('keydown', (ev) => {
@@ -56,6 +57,7 @@ document.addEventListener('keydown', (ev) => {
   if (game.getStatus() === 'win') {
     winMessage();
   }
+
   if (game.getStatus() === 'lose') {
     loseMessage();
   }
@@ -68,36 +70,36 @@ startBtn.addEventListener('click', () => {
     deleteMessagesAll();
 
     startBtn.textContent = 'Restart';
-    startBtn.classList.replace('start-mode', 'restart-mode');
-  } else if (startBtn.classList.contains('restart-mode')) {
+    startBtn.classList.replace('start-mode', 'restart');
+  } else if (startBtn.classList.contains('restart')) {
     game.restart();
     deleteMessagesAll();
     startMessage();
 
     startBtn.textContent = 'Start';
-    startBtn.classList.replace('restart-mode', 'start-mode');
+    startBtn.classList.replace('restart', 'start-mode');
   }
 });
 
 //! Какой то комент
-//TODO Какой то комент
-//? Какой то комент
+// TODO Какой то комент
+// ? Какой то комент
 // Обычная заметка (дополнительная)
 
-//? - Оператор a ||= b 👉 Логическое присваивание OR Логика:
+// ? - Оператор a ||= b 👉 Логическое присваивание OR Логика:
 /* если a truthy → ничего не происходит
 если a falsy → в a запишется b
 Важно:
 b НЕ выполнится, если a === true (короткое замыкание)
  */
-//? Метод some()
+// ? Метод some()
 /*
 Array.prototype.some()
 👉 возвращает true, если ХОТЯ БЫ ОДИН элемент дал true
 arr.some(item => item > 5);
 остановится сразу, как найдёт true
 если все false → вернёт false */
-//? Метод every()
+// ? Метод every()
 /*
 Array.prototype.every()
 👉 возвращает true, если ВСЕ элементы дали true

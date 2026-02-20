@@ -1,10 +1,9 @@
 // variable for board (html)
 export const board = document.querySelector('.game-field');
 // variable for field Score
-export let scoreHtml = document.querySelector('.game-score');
+export const scoreHtml = document.querySelector('.game-score');
 // variable for Btn Start
 export const startBtn = document.querySelector('.start');
-const textStart = 'Press "Start" to begin game. Good luck!';
 
 export const collorMap = {
   2: 'field-cell--2',

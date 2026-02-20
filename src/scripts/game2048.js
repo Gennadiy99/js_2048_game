@@ -8,7 +8,7 @@ import {
   removeTileMarg,
 } from './utils.js';
 
-import { board, scoreHtml, collorMap, startBtn } from './utils-html.js';
+import { board, scoreHtml, collorMap } from './utils-html.js';
 
 export class Game {
   constructor() {
@@ -29,7 +29,7 @@ export class Game {
       const curentCell = chip.cell;
 
       for (const vec of arrVector) {
-        let step = getDirectionVector1(vec);
+        const step = getDirectionVector1(vec);
 
         const nextRow = curentCell.row + step.row;
         const nextCol = curentCell.col + step.col;
@@ -48,7 +48,9 @@ export class Game {
   #getRandomEmptyCell() {
     const emptyCells = this.cellArr.filter((cell) => cell.isEmpty);
 
-    if (emptyCells.length === 0) return null;
+    if (emptyCells.length === 0) {
+      return null;
+    }
 
     return random(emptyCells);
   }
@@ -61,7 +63,7 @@ export class Game {
       return null;
     }
 
-    let value = Math.random() < 0.1 ? 4 : 2;
+    const value = Math.random() < 0.1 ? 4 : 2;
     const chip = new Tile(cell, value);
 
     this.#createHtmlChipNew(chip); // create div-chip
@@ -90,16 +92,19 @@ export class Game {
         moved = true;
       }
     }
+
     for (const chip of arrChip) {
       if (this.#margeChips(chip, direction)) {
         moved = true;
       }
     }
+
     for (const chip of arrChip) {
       if (this.#moveOneChip(chip, direction)) {
         moved = true;
       }
     }
+
     return moved;
   }
 
@@ -107,7 +112,9 @@ export class Game {
   #moveOneChip(chip, direction) {
     const vector = getDirectionVector1(direction);
 
-    if (!vector) return false;
+    if (!vector) {
+      return false;
+    }
 
     let moved = false;
     let currentCell = chip.cell;
@@ -118,9 +125,13 @@ export class Game {
 
       const nextCell = this.#getCell(nextRow, nextCol);
 
-      if (!nextCell) break;
+      if (!nextCell) {
+        break;
+      }
 
-      if (!nextCell.isEmpty) break;
+      if (!nextCell.isEmpty) {
+        break;
+      }
 
       currentCell.tile = null;
 
@@ -138,9 +149,14 @@ export class Game {
   #margeChips(chip, direction) {
     const vector = getDirectionVector1(direction);
 
-    if (!vector) return false;
+    // if (!vector) return {false;}
 
-    let currentCell = chip.cell;
+    if (!vector) {
+      return false;
+    }
+
+    const currentCell = chip.cell;
+
     const nextRow = currentCell.row + vector.row;
     const nextCol = currentCell.col + vector.col;
     const nextCell = this.#getCell(nextRow, nextCol);
@@ -152,6 +168,7 @@ export class Game {
     if (nextCell.isEmpty) {
       return false;
     }
+
     if (
       nextCell.tile.value === chip.value &&
       !nextCell.tile.marg &&
@@ -159,12 +176,11 @@ export class Game {
     ) {
       const tileToRemove = nextCell.tile;
       const htmlToRemove = nextCell.tile.idObj;
-
       const chipHtml = document.getElementById(chip.idObj);
 
       chip.value *= 2;
-      chipHtml.textContent = chip.value;
-      chipHtml.classList.add(collorMap[chip.value]);
+      chipHtml.textContent = chip.value; // ! move to
+      chipHtml.classList.add(collorMap[chip.value]); // ! move to
 
       this.#calculationScore(chip.value);
 
@@ -172,12 +188,12 @@ export class Game {
       chip.cell = nextCell;
       nextCell.tile = chip;
       chip.marg = true;
-
       removeTileMarg(tileToRemove, this.arrChip); // Chip removed from field
-      document.getElementById(htmlToRemove).remove(); // htmlChip removed from field
+      document.getElementById(htmlToRemove).remove(); // htmlChip removed
 
       return true;
     }
+
     return false;
   }
 
@@ -216,11 +232,13 @@ export class Game {
         collor: chip.collor,
       })),
     };
+
     localStorage.setItem('gameState', JSON.stringify(state));
   }
 
   getState() {
     const dataGame = JSON.parse(localStorage.getItem('gameState'));
+
     return dataGame;
   }
 
@@ -231,6 +249,7 @@ export class Game {
     for (const t of dataGame.tiles) {
       const cell = this.#getCell(t.row, t.col);
       const chip = new Tile(cell);
+
       chip.idObj = t.id;
       chip.value = t.value;
       chip.collor = t.collor;
@@ -245,8 +264,14 @@ export class Game {
   }
 
   getStatus() {
-    if (this.isWin) return 'win';
-    if (this.isLose) return 'lose';
+    if (this.isWin) {
+      return 'win';
+    }
+
+    if (this.isLose) {
+      return 'lose';
+    }
+
     return 'playing';
   }
 
@@ -259,8 +284,6 @@ export class Game {
 
     if (this.getFilledCells() && !this.canMove()) {
       this.isLose = true;
-
-      return;
     }
   }
 
@@ -271,7 +294,7 @@ export class Game {
 
   restart() {
     this.arrChip = []; // clear array Chip
-    this.cellArr.forEach((cell) => (cell.tile = null)); // Removes tiles from the field cells
+    this.cellArr.forEach((cell) => (cell.tile = null)); // Removes tiles
     this.score = 0; // clear score
     this.isWin = false;
     this.isLose = false;
@@ -295,7 +318,7 @@ export class Game {
       'field-cell',
       `field-cell--${Chip.value}`,
       'chipHtml',
-      'chipHtmlNew',
+      'chipHtmlAnim',
       Chip.collor,
     );
     div.style.position = 'absolute';
@@ -304,7 +327,7 @@ export class Game {
 
     this.#applyHtmlChip(Chip, div);
     board.append(div);
-    setTimeout(() => div.classList.remove('chipHtmlNew'), 500);
+    setTimeout(() => div.classList.remove('chipHtmlAnim'), 500);
   }
 
   #applyHtmlChip(Chip, div) {

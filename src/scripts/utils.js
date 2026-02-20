@@ -31,7 +31,9 @@ const arrSortCondition = {
 export function sortChip(direction, arrChip) {
   const condition = arrSortCondition[direction];
 
-  if (!condition) return null;
+  if (!condition) {
+    return null;
+  }
   arrChip.sort(condition);
 }
 
@@ -64,16 +66,20 @@ export function createCellsField() {
       });
     }
   }
+
   return cells;
 }
 
 // random empty cell
 export function random(emptyCells) {
   const index = Math.floor(Math.random() * emptyCells.length);
+
   return emptyCells[index];
 }
+
 export function removeTileMarg(tile, arrChip) {
   const index = arrChip.indexOf(tile);
+
   if (index !== -1) {
     arrChip.splice(index, 1);
   }
