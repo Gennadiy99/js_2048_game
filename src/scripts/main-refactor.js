@@ -8,6 +8,7 @@ import {
   loseMessage,
   deleteMessagesAll,
   startMessage,
+  board,
 } from './utils-html.js';
 
 const game = new Game();
@@ -32,11 +33,45 @@ if (dateState) {
 }
 
 document.addEventListener('keydown', (ev) => {
-  if (game.getStatus() !== 'playing') {
+  const direction = ev.key; // direction arrow.
+
+  startedGame(direction);
+
+  /*  if (game.getStatus() !== 'playing') {
     return;
   }
 
-  const direction = ev.key; // direction arrow.
+  if (!isArrowButton(direction)) {
+    return;
+  } // checking direction
+
+  if (!game.moveMap[direction]()) {
+    return;
+  } // get moving
+
+  game.resetMergeFlags();
+  game.renderMoveHtmlChip();
+  game.createChip();
+  applyCollorChip(game.arrChip);
+  // game.renderHtmlChip();
+  game.updateStatus();
+  game.saveState();
+
+  if (game.getStatus() === 'win') {
+    winMessage();
+  }
+
+  if (game.getStatus() === 'lose') {
+    loseMessage();
+  } */
+});
+
+//! new solwed game
+
+function startedGame(direction) {
+  if (game.getStatus() !== 'playing') {
+    return;
+  }
 
   if (!isArrowButton(direction)) {
     return;
@@ -61,6 +96,43 @@ document.addEventListener('keydown', (ev) => {
   if (game.getStatus() === 'lose') {
     loseMessage();
   }
+}
+
+let startX = 0;
+let startY = 0;
+
+board.addEventListener('touchstart', (e) => {
+  const touch = e.changedTouches[0];
+
+  startX = touch.clientX;
+  startY = touch.clientY;
+});
+
+board.addEventListener('touchend', (e) => {
+  const touch = e.changedTouches[0];
+
+  const endX = touch.clientX;
+  const endY = touch.clientY;
+
+  const deltaX = endX - startX;
+  const deltaY = endY - startY;
+
+  let directionFromAEL = '';
+
+  if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    if (deltaX > 0) {
+      directionFromAEL = 'ArrowRight';
+    } else {
+      directionFromAEL = 'ArrowLeft';
+    }
+  } else {
+    if (deltaY > 0) {
+      directionFromAEL = 'ArrowUp';
+    } else {
+      directionFromAEL = 'ArrowDown';
+    }
+  }
+  startedGame(directionFromAEL);
 });
 
 // click start button
