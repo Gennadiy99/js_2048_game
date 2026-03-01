@@ -127,9 +127,9 @@ board.addEventListener('touchend', (e) => {
     }
   } else {
     if (deltaY > 0) {
-      directionFromAEL = 'ArrowUp';
-    } else {
       directionFromAEL = 'ArrowDown';
+    } else {
+      directionFromAEL = 'ArrowUp';
     }
   }
   startedGame(directionFromAEL);
