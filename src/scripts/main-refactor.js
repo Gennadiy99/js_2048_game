@@ -36,37 +36,7 @@ document.addEventListener('keydown', (ev) => {
   const direction = ev.key; // direction arrow.
 
   startedGame(direction);
-
-  /*  if (game.getStatus() !== 'playing') {
-    return;
-  }
-
-  if (!isArrowButton(direction)) {
-    return;
-  } // checking direction
-
-  if (!game.moveMap[direction]()) {
-    return;
-  } // get moving
-
-  game.resetMergeFlags();
-  game.renderMoveHtmlChip();
-  game.createChip();
-  applyCollorChip(game.arrChip);
-  // game.renderHtmlChip();
-  game.updateStatus();
-  game.saveState();
-
-  if (game.getStatus() === 'win') {
-    winMessage();
-  }
-
-  if (game.getStatus() === 'lose') {
-    loseMessage();
-  } */
 });
-
-//! new solwed game
 
 function startedGame(direction) {
   if (game.getStatus() !== 'playing') {
@@ -85,7 +55,6 @@ function startedGame(direction) {
   game.renderMoveHtmlChip();
   game.createChip();
   applyCollorChip(game.arrChip);
-  // game.renderHtmlChip();
   game.updateStatus();
   game.saveState();
 
