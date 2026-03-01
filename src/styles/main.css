@@ -84,9 +84,15 @@ body {
 }
 
 .game-field {
+  touch-action: none;
+  user-select: none;
+
   position: relative;
+
   border-spacing: 10px;
+
   border-radius: 5px;
+
   background: #bbada0;
 }
 
